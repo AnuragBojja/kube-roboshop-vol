@@ -49,12 +49,13 @@ spec:
         service: mysql
         tier: database
     spec:
-      - name: mysql
-        image: anuragbojja/mysql:v1
-        imagePullPolicy: Always
-        volumeMounts:
-          - name: mysql
-            mountPath: /var/lib/mysql
+      containers:
+        - name: mysql
+          image: anuragbojja/mysql:v1
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: mysql
+              mountPath: /var/lib/mysql
   volumeClaimTemplates:
   - metadata:
       name: mysql
