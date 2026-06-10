@@ -30,7 +30,7 @@ spec:
     targetPort: 3306
 ---
 apiVersion: apps/v1
-kind: statefulSet 
+kind: StatefulSet 
 metadata:
   name: mysql
   namespace: roboshop
