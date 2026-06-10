@@ -35,13 +35,13 @@ metadata:
   name: mysql
   namespace: roboshop
 spec:
-  repicas: 1
-  serviceName: mysql-headless
   selector:
     matchLabels:
       project: roboshop
       service: mysql
       tier: database
+  replicas: 1
+  serviceName: mysql-headless
   template:
     metadata:
       labels:
