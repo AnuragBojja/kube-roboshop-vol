@@ -19,6 +19,7 @@ metadata:
   name: rabbitmq-headless
   namespace: roboshop
 spec:
+  clusterIP: None
   selector:
     project: roboshop
     service: rabbitmq
