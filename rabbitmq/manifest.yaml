@@ -68,8 +68,8 @@ spec:
     - metadata:
         name: rabbitmq
       spec:
-      accessModes: [ "ReadWriteOnce" ]
-      storageClassName: "roboshop-ebs-sc"
-      resources:
-        requests:
-          storage: 1Gi
+        accessModes: [ "ReadWriteOnce" ]
+        storageClassName: "roboshop-ebs-sc"
+        resources:
+          requests:
+            storage: 1Gi
