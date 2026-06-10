@@ -60,10 +60,10 @@ spec:
   - metadata:
       name: mysql
     spec:
-    accessModes: [ "ReadWriteOnce" ]
-    storageClassName: "roboshop-ebs-sc"
-    resources:
-      requests:
-        storage: 1Gi
+      accessModes: [ "ReadWriteOnce" ]
+      storageClassName: "roboshop-ebs-sc"
+      resources:
+        requests:
+          storage: 1Gi
 
         
