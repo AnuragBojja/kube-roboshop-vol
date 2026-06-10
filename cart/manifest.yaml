@@ -47,40 +47,40 @@ spec:
       project: roboshop
       service: cart
       tier: backend
-    template:
-      metadata:
-        labels:
-          project: roboshop
-          service: cart
-          tier: backend
-      spec: 
-        containers:
-          - name: cart
-            image: anuragbojja/cart:v1
-            imagePullPolicy: Always
-            envFrom:
-              configMapRef:
-                - name: cart 
-            livenessProbe:
-              httpGet:
-                path: /health
-                port: 8080
-              initialDelaySeconds: 15
-              periodSeconds: 10
-            readinessProbe:
-              httpGet:
-                path: /health
-                port: 8080
-              initialDelaySeconds: 15
-              failureThreshold: 2
-              periodSeconds: 10
-            resources:
-              requests:
-                memory: "128Mi"
-                cpu: "250m"
-              limits:
-                memory: "256Mi"
-                cpu: "350m"
+  template:
+    metadata:
+      labels:
+        project: roboshop
+        service: cart
+        tier: backend
+    spec: 
+      containers:
+        - name: cart
+          image: anuragbojja/cart:v1
+          imagePullPolicy: Always
+          envFrom:
+            - configMapRef:
+                name: cart 
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8080
+            initialDelaySeconds: 15
+            failureThreshold: 2
+            periodSeconds: 10
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "250m"
+            limits:
+              memory: "256Mi"
+              cpu: "350m"
 ---
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
