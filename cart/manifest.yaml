@@ -1,58 +1,66 @@
-apiVersion: v1
+apiVersion: v1 
 kind: ConfigMap 
-metadata:
-  name: catalogue
-  namespace: roboshop
+metadata: 
+  name: cart 
+  namespace: roboshop 
   labels:
     project: roboshop
-    service: catalogue
+    service: cart
     tier: backend
 data:
-  MONGO: "true"
-  MONGO_URL: "mongodb://mongodb:27017/catalogue"
+  REDIS_HOST: "redis"
+  CATALOGUE_HOST: "catalogue"
+  CATALOGUE_PORT: "8080"
 ---
 apiVersion: v1 
 kind: Service
-metadata: 
-  name: catalogue
-  namespace: roboshop
-spec:
-  selector:
-    project: roboshop
-    service: catalogue
-    tier: backend
-  ports:
-    - protocol: TCP
-      port: 8080
-      targetPort: 8080
----
-apiVersion: apps/v1
-kind: Deployment 
-metadata: 
-  name: catalogue
+metadata:
+  name: cart
   namespace: roboshop
   labels:
     project: roboshop
-    service: catalogue
+    service: cart
+    tier: backend
+spec:
+  selector:
+    project: roboshop
+    service: cart
+    tier: backend
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+---
+apiVersion: v1
+kind: Deployment 
+metadata:
+  name: cart 
+  namespace: roboshop
+  labels:
+    project: roboshop
+    service: cart
     tier: backend
 spec:
   replicas: 1
   selector:
     matchLabels:
       project: roboshop
-      service: catalogue
+      service: cart
       tier: backend
-  template:
+    template:
       metadata:
         labels:
           project: roboshop
-          service: catalogue
+          service: cart
           tier: backend
-      spec:
+      spec: 
         containers:
-          - name: catalogue
-            image: anuragbojja/catalogue:v1
-            imagePullPolicy: Always 
+          - name: cart
+            image: anuragbojja/cart:v1
+            imagePullPolicy: Always
+            envFrom:
+              configMapRef:
+                - name: cart 
             livenessProbe:
               httpGet:
                 path: /health
@@ -66,9 +74,6 @@ spec:
               initialDelaySeconds: 15
               failureThreshold: 2
               periodSeconds: 10
-            envFrom:
-              - configMapRef:
-                  name: catalogue
             resources:
               requests:
                 memory: "128Mi"
@@ -80,17 +85,12 @@ spec:
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: catalogue
-  namespace: roboshop
-  labels:
-    project: roboshop
-    service: catalogue
-    tier: backend
+  name: cart
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: catalogue
+    name: cart
   minReplicas: 1
   maxReplicas: 3
   metrics:
